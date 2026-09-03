@@ -35,6 +35,9 @@ blijven. Boven het veld staat één grijze regel met de context van de stap.
 
 Er staan minderjarige spelers achter dit project.
 
+- Elke pagina heeft `<meta name="robots" content="noindex, nofollow">` in de head,
+  zodat de site niet in Google komt. Een nieuwe pagina krijgt die regel ook. Er staat
+  bewust geen blokkade in een `robots.txt`: dan kan Google de noindex niet lezen.
 - Voornamen bij rugnummers mogen, en staan op `opstelling.html`. Dat is een
   bewuste keuze van de trainer, met de ouders geinformeerd.
 - Wat er niet op mag: achternamen, foto's, wie tweede keus of vervanger is,
