@@ -108,4 +108,17 @@ in commentaar dat je kunt kopieren voor een nieuwe week.
 
 ## Deploy
 
-Statische hosting, bijvoorbeeld GitHub Pages of Netlify. Geen server nodig.
+Statische hosting op GitHub Pages, geen server nodig. Het bestand `CNAME`
+bevat `abs17-1.dutchview.com`, dat is het adres van de site.
+
+Wat er eenmalig moet gebeuren:
+
+1. Repo op GitHub zetten en pushen.
+2. In de repo onder Settings, Pages: bron is de branch `main`, map `/`.
+3. In Google Cloud DNS (daar staat de DNS van dutchview.com) een CNAME
+   toevoegen: `abs17-1` naar `<github-gebruiker>.github.io`. De A-records van
+   dutchview.com zelf blijven ongemoeid, die wijzen naar Webflow.
+4. Terug in Settings, Pages wachten tot het certificaat klaar is en dan
+   Enforce HTTPS aanzetten.
+
+Daarna is elke `git push` naar `main` een publicatie.
