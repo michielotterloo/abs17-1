@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speelafspraken &middot; ABS JO17-1</title>
+<style>
+  :root{
+    --papier:#f8f7f4;
+    --paneel:#ffffff;
+    --rand:#e5e7eb;
+    --veld:#4a9d63;
+    --lijn:rgba(255,255,255,.85);
+    --tekst:#1f2937;
+    --gedempt:#6b7280;
+    --speler:#1d4ed8;
+    --keeper:#eab308;
+    --tegenstander:#9ca3af;
+    --accent:#fbbf24;
+    --accent-vlak:#fef3c7;
+    --accent-tekst:#92400e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--papier);
+    color:var(--tekst);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;
+    padding:24px 16px 64px;
+  }
+  .wrap{max-width:1000px;margin:0 auto}
+  .terug{display:inline-block;margin-bottom:14px;color:var(--gedempt);font-size:14px;text-decoration:none}
+  .terug:hover{color:var(--speler)}
+  h1{font-size:clamp(26px,6vw,32px);letter-spacing:-.02em;font-weight:800;margin:0 0 4px}
+  .sub{color:var(--gedempt);font-size:15px;margin:0}
+  .tabs{display:flex;gap:8px;margin:20px 0 14px;flex-wrap:wrap}
+  .tab{
+    background:var(--paneel);color:var(--tekst);border:1px solid var(--rand);
+    border-radius:999px;padding:9px 18px;font-size:15px;font-weight:600;
+    cursor:pointer;font-family:inherit;
+  }
+  .tab[aria-selected="true"]{background:var(--speler);border-color:var(--speler);color:#fff}
+  .tab:focus-visible,.knop:focus-visible,.stap:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:28px;align-items:start}
+  @media (max-width:860px){.layout{grid-template-columns:1fr}}
+
+  .kop{font-size:13px;color:var(--gedempt);margin:0 0 8px;min-height:20px}
+  .veldhouder{max-width:480px}
+  svg{width:100%;height:auto;display:block}
+  .speler circle{stroke:#fff;stroke-width:2.5}
+  .speler text{font-weight:700;font-size:19px;text-anchor:middle;fill:#fff;pointer-events:none}
+  .speler.keeper circle{fill:var(--keeper)}
+  .speler.keeper text{fill:var(--tekst)}
+  .speler.tegen circle{fill:var(--tegenstander);fill-opacity:.85;stroke-opacity:.9}
+  .beweegt{transition:transform .85s cubic-bezier(.4,0,.2,1)}
+  #bal{transition:transform .7s cubic-bezier(.4,0,.2,1)}
+  .spoor{stroke:var(--accent);stroke-width:4;fill:none}
+  .pass{stroke:#fff;stroke-width:3;stroke-dasharray:9 7;fill:none;opacity:.95}
+  .aanwijzing{
+    font-size:13px;font-weight:700;fill:#fff;
+    paint-order:stroke fill;stroke:rgba(31,41,55,.35);stroke-width:2.5;stroke-linejoin:round;
+  }
+  .aanwijzing.groot{font-size:16px}
+  #lijnmarkering,#blok{opacity:0;transition:opacity .5s}
+
+  .bediening{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  .knop{
+    background:var(--accent);color:var(--accent-tekst);border:0;border-radius:8px;
+    padding:10px 20px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
+  }
+  .knop.stil{background:var(--paneel);color:var(--tekst);border:1px solid var(--rand)}
+  .bijschrift{
+    margin-top:14px;padding:14px 16px;background:var(--accent-vlak);
+    border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+    font-size:16px;min-height:74px;
+  }
+  ol.stappen{list-style:none;margin:16px 0 0;padding:0}
+  ol.stappen li{margin:0 0 4px}
+  .stap{
+    width:100%;text-align:left;background:transparent;border:0;color:var(--gedempt);
+    font-family:inherit;font-size:14px;cursor:pointer;padding:8px 10px;border-radius:6px;
+    display:flex;gap:10px;align-items:baseline;
+  }
+  .stap:hover{background:rgba(31,41,55,.05)}
+  .stap[aria-current="true"]{color:var(--tekst);background:rgba(31,41,55,.06);font-weight:600}
+  .stap span{color:var(--speler);font-weight:700;min-width:14px}
+
+  .regels h2{font-size:clamp(24px,5vw,32px);font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .regels .onder{color:var(--gedempt);font-size:15px;margin:0 0 28px}
+  .linie{margin-bottom:22px;padding-left:12px;border-left:3px solid transparent;transition:border-color .3s}
+  .linie.actief{border-left-color:var(--accent)}
+  .linie h3{font-size:17px;margin:0 0 6px;color:var(--speler);font-weight:700}
+  .linie p{margin:0;font-size:16px;color:var(--tekst)}
+  .stem{
+    background:var(--accent-vlak);border:2px solid var(--accent);border-radius:8px;
+    padding:16px 18px;color:var(--accent-tekst);
+  }
+  .stem h3{font-size:15px;margin:0 0 6px;font-weight:700}
+  .stem p{margin:0;font-size:14px}
+  @media (prefers-reduced-motion:reduce){
+    .beweegt,#bal,#lijnmarkering,#blok{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="terug" href="index.html">Terug naar het overzicht</a>
+  <h1>ABS JO17-1 speelafspraken</h1>
+  <p class="sub">Twee regels per linie, bij balbezit en bij balverlies</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-balbezit" aria-selected="true" onclick="kiesScenario('balbezit')">Bij balbezit</button>
+    <button class="tab" role="tab" id="tab-balverlies" aria-selected="false" onclick="kiesScenario('balverlies')">Bij balverlies</button>
+  </div>
+
+  <div class="layout">
+    <div>
+      <p class="kop" id="kop"></p>
+      <div class="veldhouder">
+        <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" aria-label="Tactiekveld">
+          <defs>
+            <marker id="punt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/>
+            </marker>
+            <marker id="puntpass" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/>
+            </marker>
+          </defs>
+
+          <rect x="10" y="10" width="460" height="620" rx="6" fill="#4a9d63"/>
+          <g stroke="#ffffff" stroke-width="2.5" fill="none" opacity=".85">
+            <rect x="10" y="10" width="460" height="620" rx="6"/>
+            <line x1="10" y1="320" x2="470" y2="320"/>
+            <circle cx="240" cy="320" r="70"/>
+            <rect x="120" y="520" width="240" height="110"/>
+            <rect x="180" y="595" width="120" height="35"/>
+            <rect x="120" y="10" width="240" height="110"/>
+            <rect x="180" y="10" width="120" height="35"/>
+          </g>
+          <circle cx="240" cy="570" r="3.5" fill="#ffffff" opacity=".85"/>
+
+          <polygon id="blok" points="96,522 384,522 355,270 130,270" fill="#ffffff" opacity="0"/>
+          <line id="lijnmarkering" x1="72" y1="522" x2="408" y2="522" stroke="#fff" stroke-width="3" stroke-dasharray="10 8"/>
+          <g id="sporen"></g>
+          <g id="passes"></g>
+          <g id="spelers"></g>
+          <circle id="bal" cx="0" cy="0" r="7.5" fill="#fff" stroke="#1f2937" stroke-width="2"/>
+          <g id="aanwijzingen"></g>
+        </svg>
+      </div>
+
+      <div class="bediening">
+        <button class="knop" id="afspelen" onclick="afspelen()">Afspelen</button>
+        <button class="knop stil" onclick="terugNaarStart()">Opnieuw</button>
+      </div>
+
+      <p class="bijschrift" id="bijschrift"></p>
+      <ol class="stappen" id="stappenlijst"></ol>
+    </div>
+
+    <aside class="regels">
+      <h2 id="regeltitel">Bij balbezit</h2>
+      <p class="onder">JO17-1 &middot; 4-2-3-1 &middot; twee regels per linie</p>
+      <div class="linie" data-linie="achter">
+        <h3>Keeper en verdediging &middot; 1 2 3 4 5</h3>
+        <p id="r-achter"></p>
+      </div>
+      <div class="linie" data-linie="midden">
+        <h3>Middenveld &middot; 6 8 10</h3>
+        <p id="r-midden"></p>
+      </div>
+      <div class="linie" data-linie="voor">
+        <h3>Voorhoede &middot; 7 9 11</h3>
+        <p id="r-voor"></p>
+      </div>
+      <div class="stem">
+        <h3>Stem in het veld</h3>
+        <p id="stemtekst"></p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const scenarios = {
+  balbezit: {
+    titel: "Bij balbezit",
+    regels: {
+      achter: "Eerst kijken of het diep kan, pas daarna opzij. Back aan de balzijde hoog, andere back zakt in als vierde man.",
+      midden: "De 6 is altijd aanspeelbaar achter de bal, de 8 loopt door, de 10 zoekt tussen de linies.",
+      voor: "De 9 en de 10 wisselen kort en diep af, de winger aan de balzijde loopt in de rug van de back, de andere winger blijft breed."
+    },
+    stem: "De centrale verdediger stuurt vanuit het centrum de organisatie. Startsein voor drukzetten blijft bij de 6.",
+    spelers: [
+      {n:"1",t:"keeper",x:240,y:590},
+      {n:"3",x:105,y:515},{n:"5",x:185,y:510},{n:"4",x:300,y:510},{n:"2",x:390,y:515},
+      {n:"6",x:205,y:435},{n:"8",x:285,y:430},
+      {n:"10",x:240,y:320},{n:"7",x:410,y:300},{n:"11",x:75,y:300},
+      {n:"9",x:240,y:200}
+    ],
+    stappen:[
+      {kort:"Uitgangspositie",
+       kop:"Eigen doel onderaan, wij spelen naar boven",
+       tekst:"De 4-2-3-1 zoals we hem neerzetten. De keeper heeft de bal.",
+       bal:[240,551], linie:null, pos:{}, labels:[]},
+
+      {kort:"Bal naar de 4",
+       kop:"Bal aan de rechterkant, dus rechts is de balzijde",
+       tekst:"De bal gaat naar rechts, dus rechts is nu de balzijde. De 2 schuift hoog op, de 3 zakt in als vierde man en de 6 maakt zich aanspeelbaar achter de bal.",
+       bal:[329,497], linie:"achter",
+       pos:{"2":[403,430],"3":[111,520],"6":[245,425]},
+       labels:[["hoog",403,462],["zakt in",111,556],["aanspeelbaar",245,470]]},
+
+      {kort:"Diep en kort",
+       kop:"Iedereen zoekt zijn eigen ruimte",
+       tekst:"De 9 loopt diep, de 10 komt tussen de linies, de 8 loopt door en de 7 duikt in de rug van de back. De 11 blijft breed aan de andere kant.",
+       bal:[329,497], linie:"voor",
+       pos:{"9":[219,120],"10":[259,225],"8":[184,350],"7":[413,200],"11":[72,200]},
+       labels:[["hoog",403,462],["zakt in",111,556],["aanspeelbaar",245,470],
+               ["diep",219,88],["tussen de linies",259,193],["loopt door",184,318],
+               ["in de rug",413,168],["breed",72,168]]},
+
+      {kort:"Twee opties",
+       kop:"Eerst kijken of het diep kan, pas daarna opzij",
+       tekst:"Vanaf de 4 liggen er twee ballen klaar: tussen de linies naar de 10, of opzij naar de 5 om het opnieuw op te bouwen.",
+       bal:[329,497], linie:"midden",
+       pos:{},
+       labels:[["hoog",403,462],["zakt in",111,556],["aanspeelbaar",245,470],
+               ["tussen de linies",259,193],["loopt door",184,318],
+               ["in de rug",413,168],["breed",72,168],["diep",219,88]],
+       passes:[[315,485,262,252],[311,505,208,508]]},
+
+      {kort:"Diep in de ruimte",
+       kop:"Achter hun verdediging langs",
+       tekst:"De bal gaat achter hun verdediging langs, en daar zitten onze kansen. De 9 komt op snelheid in de ruimte.",
+       bal:[252,72], linie:"voor",
+       pos:{"9":[228,112]},
+       labels:[["in de ruimte",300,80],["in de rug",413,168],["breed",72,168]]}
+    ]
+  },
+
+  balverlies: {
+    titel: "Bij balverlies",
+    regels: {
+      achter: "De lijn staat eerst gelijk, dan pas het duel. Bij ZAK samen terug tot buiten de zestien.",
+      midden: "De 6 blijft voor de verdediging staan en gaat niet mee naar de flank. De 8 en de 10 keren terug in de rug van de bal.",
+      voor: "Eerste actie is knijpen naar binnen, niet meteen op de bal."
+    },
+    stem: "De centrale verdediger roept ZAK en houdt de lijn gelijk. Startsein voor drukzetten blijft bij de 6.",
+    spelers: [
+      {n:"1",t:"keeper",x:240,y:595},
+      {n:"3",x:110,y:470},{n:"5",x:200,y:465},{n:"4",x:295,y:465},{n:"2",x:390,y:470},
+      {n:"6",x:240,y:395},{n:"8",x:300,y:330},
+      {n:"10",x:215,y:300},{n:"7",x:390,y:250},{n:"11",x:85,y:250},
+      {n:"9",x:250,y:180},
+      {n:"",t:"tegen",id:"o1",x:360,y:300},{n:"",t:"tegen",id:"o2",x:200,y:230},{n:"",t:"tegen",id:"o3",x:275,y:120}
+    ],
+    stappen:[
+      {kort:"Wij hebben de bal",
+       kop:"Eigen doel onderaan, de grijze spelers zijn de tegenstander",
+       tekst:"We zijn in balbezit op het middenveld, de 8 heeft de bal.",
+       bal:[330,332], linie:null, pos:{}, labels:[]},
+
+      {kort:"Balverlies",
+       kop:"Vanaf hier telt alleen nog wat we samen doen",
+       tekst:"We raken de bal kwijt. Vanaf dit moment telt alleen nog wat we samen doen.",
+       bal:[380,288], linie:null, pos:{}, labels:[]},
+
+      {kort:"Knijpen naar binnen",
+       kop:"Eerst het midden sluiten",
+       tekst:"De voorhoede knijpt eerst naar binnen en duikt niet meteen op de bal. Zo sluiten we het midden.",
+       bal:[380,288], linie:"voor",
+       pos:{"9":[250,232],"7":[355,255],"11":[123,285]},
+       labels:[["knijpen naar binnen",250,200],["knijpen",355,223],["knijpen",123,253]]},
+
+      {kort:"Terug in de rug van de bal",
+       kop:"De 6 blijft staan, de rest keert terug",
+       tekst:"De 8 en de 10 keren terug aan de goede kant van de bal. De 6 blijft voor de verdediging staan en gaat niet mee naar de flank.",
+       bal:[380,288], linie:"midden",
+       pos:{"8":[322,375],"10":[250,362],"6":[245,470]},
+       labels:[["knijpen naar binnen",250,200],["knijpen",355,223],["knijpen",123,253],
+               ["terug in de rug",380,405],["blijft voor de verdediging",225,430,"end"]]},
+
+      {kort:"ZAK",
+       kop:"Samen zakken, en dan pas het duel",
+       tekst:"De centrale verdediger roept ZAK. De lijn blijft gelijk en we zakken samen tot buiten de zestien, pas dan het duel.",
+       bal:[250,185], linie:"achter", lijn:[72,522,400], blok:true,
+       pos:{"1":[240,600],"3":[115,522],"5":[197,522],"4":[283,522],"2":[365,522],
+            "6":[245,470],"8":[322,375],"10":[250,362],"7":[367,285],"11":[123,285],"9":[250,232],
+            "o1":[288,170],"o2":[178,175],"o3":[410,210]},
+       labels:[["knijpen naar binnen",215,222,"end"],["knijpen",367,253],["knijpen",123,253],
+               ["terug in de rug",380,405],["blijft voor de verdediging",225,430,"end"],
+               ["lijn gelijk",424,505],["ZAK · samen tot buiten de zestien",245,560,"middle","groot"]]}
+    ]
+  }
+};
+
+let huidig = "balbezit";
+let stapNr = 0;
+let timer = null;
+let posities = {};
+
+const svgns = "http://www.w3.org/2000/svg";
+function sleutel(s){ return s.id || s.n; }
+function maak(naam){ return document.createElementNS(svgns, naam); }
+
+function bouwVeld(naam){
+  const s = scenarios[naam];
+  const groep = document.getElementById("spelers");
+  groep.innerHTML = "";
+  posities = {};
+  s.spelers.forEach(sp=>{
+    const k = sleutel(sp);
+    posities[k] = [sp.x, sp.y];
+    const g = maak("g");
+    g.setAttribute("class","speler beweegt" + (sp.t==="keeper"?" keeper":"") + (sp.t==="tegen"?" tegen":""));
+    g.setAttribute("id","sp-"+k);
+    g.setAttribute("transform",`translate(${sp.x},${sp.y})`);
+    const c = maak("circle");
+    c.setAttribute("r", sp.t==="tegen" ? 15 : 19);
+    if(!sp.t) c.setAttribute("fill","#1d4ed8");
+    g.appendChild(c);
+    if(sp.n){
+      const t = maak("text");
+      t.setAttribute("y",7);
+      t.textContent = sp.n;
+      g.appendChild(t);
+    }
+    groep.appendChild(g);
+  });
+
+  ["achter","midden","voor"].forEach(l=>{
+    document.getElementById("r-"+l).textContent = s.regels[l];
+  });
+  document.getElementById("regeltitel").textContent = s.titel;
+  document.getElementById("stemtekst").textContent = s.stem;
+
+  const lijst = document.getElementById("stappenlijst");
+  lijst.innerHTML = "";
+  s.stappen.forEach((st,i)=>{
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.className = "stap";
+    b.innerHTML = `<span>${i+1}</span> ${st.kort}`;
+    b.onclick = ()=>{ stop(); naarStap(i); };
+    li.appendChild(b);
+    lijst.appendChild(li);
+  });
+}
+
+function naarStap(i){
+  const s = scenarios[huidig];
+
+  // alle posities opnieuw opbouwen tot en met stap i
+  const basis = {};
+  s.spelers.forEach(sp=> basis[sleutel(sp)] = [sp.x, sp.y]);
+  for(let k=1;k<=i;k++){
+    Object.entries(s.stappen[k].pos).forEach(([n,p])=> basis[n]=p);
+  }
+
+  // gele looppijlen, alleen voor onze spelers die in deze stap bewegen
+  const sporen = document.getElementById("sporen");
+  sporen.innerHTML = "";
+  const soort = {};
+  s.spelers.forEach(sp=> soort[sleutel(sp)] = sp.t);
+  Object.entries(basis).forEach(([n,p])=>{
+    const oud = posities[n];
+    const el = document.getElementById("sp-"+n);
+    if(!el) return;
+    const beweegt = oud && (oud[0]!==p[0] || oud[1]!==p[1]);
+    if(beweegt && soort[n] !== "tegen"){
+      const dx = p[0]-oud[0], dy = p[1]-oud[1];
+      const lengte = Math.hypot(dx,dy);
+      // de pijl start buiten de oude cirkel en stopt voor de nieuwe, zodat de punt zichtbaar blijft
+      const vanaf = Math.min(20, lengte*.3);
+      const tot   = Math.min(25, lengte*.45);
+      if(lengte >= 30){
+        const ln = maak("line");
+        ln.setAttribute("class","spoor");
+        ln.setAttribute("x1", Math.round(oud[0] + dx/lengte*vanaf));
+        ln.setAttribute("y1", Math.round(oud[1] + dy/lengte*vanaf));
+        ln.setAttribute("x2", Math.round(p[0] - dx/lengte*tot));
+        ln.setAttribute("y2", Math.round(p[1] - dy/lengte*tot));
+        ln.setAttribute("marker-end","url(#punt)");
+        sporen.appendChild(ln);
+      }
+    }
+    el.setAttribute("transform",`translate(${p[0]},${p[1]})`);
+  });
+  posities = basis;
+
+  const st = s.stappen[i];
+
+  // witte streepjespijlen voor de passopties
+  const passes = document.getElementById("passes");
+  passes.innerHTML = "";
+  (st.passes || []).forEach(([x1,y1,x2,y2])=>{
+    const ln = maak("line");
+    ln.setAttribute("class","pass");
+    ln.setAttribute("x1",x1); ln.setAttribute("y1",y1);
+    ln.setAttribute("x2",x2); ln.setAttribute("y2",y2);
+    ln.setAttribute("marker-end","url(#puntpass)");
+    passes.appendChild(ln);
+  });
+
+  // de tekstjes op het veld
+  const aanw = document.getElementById("aanwijzingen");
+  aanw.innerHTML = "";
+  (st.labels || []).forEach(([tekst,x,y,anker,extra])=>{
+    const t = maak("text");
+    t.setAttribute("class","aanwijzing" + (extra ? " "+extra : ""));
+    t.setAttribute("x",x); t.setAttribute("y",y);
+    t.setAttribute("text-anchor", anker || "middle");
+    t.textContent = tekst;
+    aanw.appendChild(t);
+  });
+
+  document.getElementById("bal").setAttribute("transform",`translate(${st.bal[0]},${st.bal[1]})`);
+  document.getElementById("kop").textContent = st.kop || "";
+  document.getElementById("bijschrift").textContent = st.tekst;
+
+  const lm = document.getElementById("lijnmarkering");
+  if(st.lijn){
+    lm.setAttribute("x1",st.lijn[0]); lm.setAttribute("y1",st.lijn[1]);
+    lm.setAttribute("x2",st.lijn[2]); lm.setAttribute("y2",st.lijn[1]);
+  }
+  lm.style.opacity = st.lijn ? "1" : "0";
+  document.getElementById("blok").style.opacity = st.blok ? ".13" : "0";
+
+  document.querySelectorAll(".linie").forEach(el=>{
+    el.classList.toggle("actief", el.dataset.linie === st.linie);
+  });
+  document.querySelectorAll(".stap").forEach((b,k)=>{
+    b.setAttribute("aria-current", k===i ? "true" : "false");
+  });
+  stapNr = i;
+}
+
+function afspelen(){
+  const s = scenarios[huidig];
+  stop();
+  if(stapNr >= s.stappen.length-1) naarStap(0);
+  const k = document.getElementById("afspelen");
+  k.textContent = "Pauze";
+  k.onclick = ()=>{ stop(); };
+  const volgende = ()=>{
+    if(stapNr < s.stappen.length-1){
+      naarStap(stapNr+1);
+      timer = setTimeout(volgende, 3200);
+    } else {
+      stop();
+    }
+  };
+  timer = setTimeout(volgende, 700);
+}
+
+function stop(){
+  if(timer) clearTimeout(timer);
+  timer = null;
+  const k = document.getElementById("afspelen");
+  k.textContent = "Afspelen";
+  k.onclick = afspelen;
+}
+
+function terugNaarStart(){
+  stop();
+  naarStap(0);
+}
+
+function kiesScenario(naam){
+  stop();
+  huidig = naam;
+  document.getElementById("tab-balbezit").setAttribute("aria-selected", naam==="balbezit");
+  document.getElementById("tab-balverlies").setAttribute("aria-selected", naam==="balverlies");
+  bouwVeld(naam);
+  naarStap(0);
+}
+
+kiesScenario("balbezit");
+</script>
+</body>
+</html>
