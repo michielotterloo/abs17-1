@@ -135,3 +135,9 @@ footer{margin-top:48px;color:var(--gedempt);font-size:13px;border-top:1px solid 
 .vorm text.merk{font-size:13px;font-weight:700;fill:#fff;
   paint-order:stroke fill;stroke:rgba(31,41,55,.35);stroke-width:2.5;stroke-linejoin:round;text-anchor:middle}
 .vorm text.poort{fill:var(--accent)}
+
+/* tekstjes op het gras, zelfde stijl als op de tactiekplaat */
+.aanwijzing{
+  font-size:13px;font-weight:700;fill:#fff;
+  paint-order:stroke fill;stroke:rgba(31,41,55,.35);stroke-width:2.5;stroke-linejoin:round;
+}

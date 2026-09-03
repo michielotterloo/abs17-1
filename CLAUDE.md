@@ -35,9 +35,13 @@ blijven. Boven het veld staat één grijze regel met de context van de stap.
 
 Er staan minderjarige spelers achter dit project.
 
-- Geen spelersnamen, foto's, rugnummer-naam-combinaties of individuele beoordelingen
-  op openbare pagina's. Verwijs naar posities en rugnummers. Dat geldt ook voor het
-  kader met de stem in het veld: daar staat "de centrale verdediger", geen naam.
+- Voornamen bij rugnummers mogen, en staan op `opstelling.html`. Dat is een
+  bewuste keuze van de trainer, met de ouders geinformeerd.
+- Wat er niet op mag: achternamen, foto's, wie tweede keus of vervanger is,
+  individuele beoordelingen, en alles over blessures of herstel. Het bronmateriaal
+  van de staf bevat dat wel, dus neem daar nooit een blok in zijn geheel over.
+- In de speelafspraken blijven we naar rugnummers en posities verwijzen, ook in het
+  kader met de stem in het veld. Een naam voegt daar niets toe aan de afspraak.
 - Wedstrijdanalyses, opstellingen en alles wat over individuele spelers gaat is
   stafmateriaal en hoort niet op de openbare site.
 - Bij twijfel: niet publiceren, eerst overleggen.
@@ -57,6 +61,7 @@ bij de 6.
 ## De pagina's
 
 - `index.html`: startpagina met kaarten naar de rest
+- `opstelling.html`: voornaam per rugnummer in de 4-2-3-1, alleen de basiself
 - `speelafspraken.html`: de twee regels per linie, geanimeerd, balbezit en balverlies
 - `per-linie.html`: per linie de losse situaties, met fout en goed naast elkaar
 - `schaduwspel.html`: hoe het blok meeschuift met de bal, in drie delen

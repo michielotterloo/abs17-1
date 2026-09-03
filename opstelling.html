@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opstelling &middot; ABS JO17-1</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="wrap">
+  <a class="terug" href="index.html">Terug naar het overzicht</a>
+  <h1>Opstelling</h1>
+  <p class="sub">Wie op welk rugnummer staat, in de 4-2-3-1.</p>
+
+  <div class="veldlayout">
+    <div>
+      <p class="kop">Eigen doel onderaan, wij spelen naar boven</p>
+      <div class="veldhouder">
+        <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" aria-label="Opstelling in de 4-2-3-1">
+          <rect x="10" y="10" width="460" height="620" rx="6" fill="#4a9d63"/>
+          <g stroke="#ffffff" stroke-width="2.5" fill="none" opacity=".85">
+            <rect x="10" y="10" width="460" height="620" rx="6"/>
+            <line x1="10" y1="320" x2="470" y2="320"/>
+            <circle cx="240" cy="320" r="70"/>
+            <rect x="120" y="520" width="240" height="110"/>
+            <rect x="180" y="595" width="120" height="35"/>
+            <rect x="120" y="10" width="240" height="110"/>
+            <rect x="180" y="10" width="120" height="35"/>
+          </g>
+          <circle cx="240" cy="570" r="3.5" fill="#ffffff" opacity=".85"/>
+          <g id="spelers"></g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="taken">
+      <h2>Per rugnummer</h2>
+      <dl id="lijst"></dl>
+      <p class="rest"><strong>Dit is de basis, geen dienstregeling.</strong> Wie waar staat kan per wedstrijd wisselen, en dat hoor je op de training. De taken per rugnummer staan bij de <a href="speelafspraken.html">speelafspraken</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    Voor spelers en staf van JO17-1. Vragen of iets dat niet klopt? Laat het weten aan de trainer.
+  </footer>
+</div>
+
+<script>
+// De basiself: rugnummer, naam en de plek op het veld.
+// Coordinaten in een SVG-viewBox van 480 bij 640, eigen doel onderaan.
+const opstelling = [
+  {n:"1",  naam:"Willem",         t:"keeper", x:240, y:590},
+  {n:"3",  naam:"Melle vG",       x:105, y:515},
+  {n:"5",  naam:"Boris",          x:185, y:510},
+  {n:"4",  naam:"Hidde",          x:300, y:510},
+  {n:"2",  naam:"Jesper",         x:390, y:515},
+  {n:"6",  naam:"Ben",            x:205, y:435},
+  {n:"8",  naam:"Mattis of Siem", x:285, y:430},
+  {n:"10", naam:"Melle R",        x:240, y:320},
+  {n:"11", naam:"Tycho",          x:75,  y:300},
+  {n:"7",  naam:"Daan",           x:410, y:300},
+  {n:"9",  naam:"Sem",            x:240, y:200}
+];
+
+const svgns = "http://www.w3.org/2000/svg";
+const groep = document.getElementById("spelers");
+const lijst = document.getElementById("lijst");
+
+opstelling.forEach(sp=>{
+  const g = document.createElementNS(svgns,"g");
+  g.setAttribute("class","speler" + (sp.t==="keeper" ? " keeper" : ""));
+  g.setAttribute("transform",`translate(${sp.x},${sp.y})`);
+  const c = document.createElementNS(svgns,"circle");
+  c.setAttribute("r",19);
+  if(!sp.t) c.setAttribute("fill","#1d4ed8");
+  g.appendChild(c);
+  const t = document.createElementNS(svgns,"text");
+  t.setAttribute("y",7);
+  t.textContent = sp.n;
+  g.appendChild(t);
+  groep.appendChild(g);
+
+  // de naam onder de speler, wit en vet zodat hij op het groen leesbaar blijft
+  const naam = document.createElementNS(svgns,"text");
+  naam.setAttribute("class","aanwijzing");
+  naam.setAttribute("x",sp.x);
+  // de keeper staat zo laag dat zijn naam eronder tegen de doellijn valt, die zetten we erboven
+  naam.setAttribute("y",sp.y + (sp.t==="keeper" ? -28 : 36));
+  naam.setAttribute("text-anchor","middle");
+  naam.textContent = sp.naam;
+  groep.appendChild(naam);
+
+  const dt = document.createElement("dt");
+  dt.textContent = sp.n;
+  if(sp.t==="keeper") dt.className = "keeper";
+  const dd = document.createElement("dd");
+  dd.textContent = sp.naam;
+  lijst.appendChild(dt);
+  lijst.appendChild(dd);
+});
+</script>
+</body>
+</html>
