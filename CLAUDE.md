@@ -54,6 +54,20 @@ Twee regels per linie, dat is het hart van de site. De centrale verdediger is de
 roeper voor de organisatie en voor het zakken, het startsein voor drukzetten ligt
 bij de 6.
 
+## De pagina's
+
+- `index.html`: startpagina met kaarten naar de rest
+- `speelafspraken.html`: de twee regels per linie, geanimeerd, balbezit en balverlies
+- `per-linie.html`: per linie de losse situaties, met fout en goed naast elkaar
+- `schaduwspel.html`: hoe het blok meeschuift met de bal, in drie delen
+- `standaardsituaties.html`: corners voor en tegen, twee vaste beelden
+- `trainingen.html`: de vaste warming-up en de kernvormen
+- `weekthemas.html`: het thema per week
+
+De drie animatiepagina's zijn bewust zelfstandig, met eigen CSS in het bestand, zodat
+ze ook los te delen zijn. Dat betekent wel dat de kleuren op vier plekken staan: in
+`assets/site.css` en in elk van die drie pagina's.
+
 ## Hoe de tactiekplaat werkt
 
 In `speelafspraken.html` staat bovenin het script een object `scenarios`. Elk
