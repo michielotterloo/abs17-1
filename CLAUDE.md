@@ -72,6 +72,10 @@ bij de 6.
 - `trainingen.html`: de vaste warming-up en de kernvormen
 - `weekthemas.html`: het thema per week
 
+Op `index.html` staan op dit moment bewust alleen de kaarten naar `speelafspraken.html`
+en `per-linie.html`. De andere vijf kaarten staan in commentaar in dat bestand, en die
+pagina's zijn nog wel gewoon bereikbaar via hun eigen adres.
+
 De drie animatiepagina's zijn bewust zelfstandig, met eigen CSS in het bestand, zodat
 ze ook los te delen zijn. Dat betekent wel dat de kleuren op vier plekken staan: in
 `assets/site.css` en in elk van die drie pagina's.
