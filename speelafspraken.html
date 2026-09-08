@@ -109,11 +109,12 @@
 <div class="wrap">
   <a class="terug" href="index.html">Terug naar het overzicht</a>
   <h1>ABS JO17-1 speelafspraken</h1>
-  <p class="sub">Twee regels per linie, bij balbezit en bij balverlies</p>
+  <p class="sub">Bij balbezit, bij balverlies, en de pressingval bij hun uittrap</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" id="tab-balbezit" aria-selected="true" onclick="kiesScenario('balbezit')">Bij balbezit</button>
     <button class="tab" role="tab" id="tab-balverlies" aria-selected="false" onclick="kiesScenario('balverlies')">Bij balverlies</button>
+    <button class="tab" role="tab" id="tab-uittrap" aria-selected="false" onclick="kiesScenario('uittrap')">Bij hun uittrap</button>
   </div>
 
   <div class="layout">
@@ -295,6 +296,70 @@ const scenarios = {
                ["terug in de rug",380,405],["blijft voor de verdediging",225,430,"end"],
                ["lijn gelijk",424,505],["ZAK · samen tot buiten de zestien",245,560,"middle","groot"]]}
     ]
+  },
+
+  uittrap: {
+    titel: "Bij hun uittrap",
+    regels: {
+      achter: "De 4 en de 5 schuiven mee op om de gedwongen lange bal te winnen. De back aan de balzijde gaat mee als restdekking; de verre kant laten we bewust open.",
+      midden: "De 6 en de 8 staan kort op hun pivots. Komt de lange bal, dan pakt de 6 de tweede bal.",
+      voor: "De 9 en de 10 verdelen hun twee centrale verdedigers. Wie het dichtst bij staat perst, geen overleg. De ander gaat tussen die verdediger en hun keeper staan."
+    },
+    stem: "De 9 start het drukzetten, en alleen op een trigger. De 6 dirigeert het blok. Komen ze er onderuit en over de middenlijn, dan is het commando ZAK.",
+    spelers: [
+      {n:"1",t:"keeper",x:240,y:450},
+      {n:"3",x:95,y:300},{n:"5",x:195,y:340},{n:"4",x:290,y:340},{n:"2",x:395,y:300},
+      {n:"6",x:200,y:240},{n:"8",x:300,y:235},
+      {n:"10",x:265,y:150},{n:"7",x:395,y:215},{n:"11",x:95,y:215},
+      {n:"9",x:215,y:115},
+      // de tegenstander bij een uittrap: keeper, twee centrale verdedigers op de lijn,
+      // twee backs breed en twee pivots op het middenveld
+      {n:"",t:"tegen",id:"o1",x:240,y:42},
+      {n:"",t:"tegen",id:"o2",x:160,y:80},{n:"",t:"tegen",id:"o3",x:320,y:80},
+      {n:"",t:"tegen",id:"o4",x:55,y:135},{n:"",t:"tegen",id:"o5",x:425,y:135},
+      {n:"",t:"tegen",id:"o6",x:185,y:195},{n:"",t:"tegen",id:"o7",x:295,y:195}
+    ],
+    stappen:[
+      {kort:"Klaarstaan",
+       kop:"Hun doel bovenaan, zij mogen uittrappen",
+       tekst:"Hun keeper heeft de bal en hun twee centrale verdedigers staan met hem op de lijn. Wij staan klaar, maar niemand zet druk voordat de bal weg is.",
+       bal:[264,52], linie:null, pos:{},
+       labels:[["klaarstaan, nog niet drukzetten",240,290]]},
+
+      {kort:"Bal naar links",
+       kop:"Wie het dichtst bij staat perst, geen overleg",
+       tekst:"De bal gaat naar de verdediger op onze linkerkant. De 9 staat het dichtst bij, dus hij perst. De 10 gaat tussen die verdediger en de keeper staan, zodat de bal niet terug kan.",
+       bal:[180,96], linie:"voor",
+       pos:{"9":[150,115],"10":[200,58],"11":[75,160],"3":[100,225]},
+       labels:[["perst",150,150],["terugspeelbal dicht",170,40,"end"],
+               ["door naar hun back",30,195,"start"],["mee als restdekking",105,262],
+               ["verre kant open",395,262]]},
+
+      {kort:"Bal naar rechts",
+       kop:"Het pendelen: de rollen wisselen, de afspraak niet",
+       tekst:"Ze spelen terug op de keeper en naar de andere kant. Nu staat de 10 het dichtst bij, dus die perst en sluit de 9 de terugspeelbal. Aan de linkerkant zakken de 11 en de 3 weer terug.",
+       bal:[300,102], linie:"voor",
+       pos:{"10":[330,115],"9":[280,58],"7":[405,160],"2":[390,225],"11":[95,200],"3":[95,285]},
+       labels:[["nu perst de 10",330,150],["de 9 sluit terug",310,40,"start"],
+               ["door naar hun back",320,205,"start"],["verre kant open",95,262]]},
+
+      {kort:"De lange bal",
+       kop:"Precies waarvoor de val is gezet",
+       tekst:"Er is geen korte optie meer, dus de bal gaat lang. Daar is het om begonnen: de 4 en de 5 zijn mee opgeschoven en winnen de eerste bal, de 6 laat zijn pivot los en pakt de tweede.",
+       bal:[250,290], linie:"achter",
+       pos:{"5":[210,290],"4":[295,285],"6":[245,335]},
+       labels:[["lange bal, gedwongen",270,250,"end"],["wij winnen de eerste bal",210,330,"end"],
+               ["de 6 pakt de tweede bal",245,375]]},
+
+      {kort:"Toch onderuit? ZAK",
+       kop:"Een wapen, geen wet",
+       tekst:"Spelen ze er wel onderuit en komen ze over de middenlijn, dan is de val voorbij en geldt de gewone afspraak. Iemand roept ZAK en we zakken samen tot buiten de zestien.",
+       bal:[292,396], linie:"achter", lijn:[72,522,400], blok:true,
+       pos:{"1":[240,600],"3":[115,522],"5":[197,522],"4":[283,522],"2":[365,522],
+            "6":[245,470],"8":[310,420],"10":[240,415],"7":[365,350],"11":[135,350],"9":[250,300],
+            "o4":[90,330],"o5":[400,330],"o6":[270,390],"o7":[300,300]},
+       labels:[["lijn gelijk",424,505],["ZAK · samen tot buiten de zestien",245,560,"middle","groot"]]}
+    ]
   }
 };
 
@@ -473,8 +538,10 @@ function terugNaarStart(){
 function kiesScenario(naam){
   stop();
   huidig = naam;
-  document.getElementById("tab-balbezit").setAttribute("aria-selected", naam==="balbezit");
-  document.getElementById("tab-balverlies").setAttribute("aria-selected", naam==="balverlies");
+  Object.keys(scenarios).forEach(n=>{
+    const tab = document.getElementById("tab-"+n);
+    if(tab) tab.setAttribute("aria-selected", n===naam);
+  });
   bouwVeld(naam);
   naarStap(0);
 }

@@ -9,6 +9,7 @@ voor spelers en ouders, en bedoeld om per seizoen aangevuld te worden.
   De site moet over twee jaar nog werken en aanpasbaar zijn door iemand die geen
   ontwikkelaar is.
 - Alles in het Nederlands, ook variabelen en functienamen in de JavaScript.
+- Het team zegt **drukzetten**, niet jagen. Gebruik die term overal.
 - Mobile first. De meeste bezoekers openen dit op een telefoon vanuit de groepsapp.
 - Één gedeelde stylesheet in `assets/site.css`. Uitzondering is
   `speelafspraken.html`, die is bewust zelfstandig zodat hij ook los te delen is.
@@ -65,7 +66,8 @@ bij de 6.
 
 - `index.html`: startpagina met kaarten naar de rest
 - `opstelling.html`: voornaam per rugnummer in de 4-2-3-1, alleen de basiself
-- `speelafspraken.html`: de twee regels per linie, geanimeerd, balbezit en balverlies
+- `speelafspraken.html`: de twee regels per linie, geanimeerd. Drie momenten: balbezit,
+  balverlies en de pressingval bij de uittrap van de tegenstander
 - `per-linie.html`: per linie de losse situaties, met fout en goed naast elkaar
 - `schaduwspel.html`: hoe het blok meeschuift met de bal, in drie delen
 - `standaardsituaties.html`: corners voor en tegen, twee vaste beelden
@@ -108,7 +110,14 @@ naast de speler blijft staan. De laatste stap van een scenario is bedoeld als de
 plaat die je kunt uitprinten: daar staan alle labels op.
 
 Een nieuwe animatie maak je door een scenario toe te voegen en een knop in de
-tabbladenrij.
+tabbladenrij. Die knop krijgt als id `tab-` plus de naam van het scenario, dan
+regelt `kiesScenario` het oplichten zelf; die loopt over alles wat in `scenarios`
+staat en hoeft niet aangepast te worden.
+
+Bij het scenario `uittrap` staat het doel van de tegenstander bovenaan in beeld,
+want daar ligt de bal. De tegenstander heeft daar zeven spelers, want de val gaat
+juist over hun structuur: keeper, twee centrale verdedigers op de lijn, twee backs
+en twee pivots.
 
 ## Hoe de standaardsituaties werken
 
