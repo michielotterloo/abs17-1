@@ -50,6 +50,15 @@ Er staan minderjarige spelers achter dit project.
   stafmateriaal en hoort niet op de openbare site.
 - Bij twijfel: niet publiceren, eerst overleggen.
 
+**Let op: deze repo is publiek** (github.com/michielotterloo/abs17-1), en dit bestand
+wordt meegepusht. Er staat dus niets in over blessures, herstel, beoordelingen of
+wie tweede keus is, ook niet als het handig zou zijn bij het plannen.
+
+Dat soort stafmateriaal staat in de map `staf/`, en die staat in `.gitignore`. Daar
+hoort in: blessures en beschikbaarheid, wedstrijdanalyses, en alles wat over een
+individuele speler gaat. Zet er nooit iets uit die map in een bestand dat wel
+gepusht wordt.
+
 ## Speelwijze, context voor de inhoud
 
 Systeem 4-2-3-1, met rugnummers als vaste taal:
