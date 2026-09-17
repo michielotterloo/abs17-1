@@ -56,7 +56,10 @@ wie tweede keus is, ook niet als het handig zou zijn bij het plannen.
 
 Dat soort stafmateriaal staat in de map `staf/`, en die staat in `.gitignore`. Daar
 hoort in: blessures en beschikbaarheid, wedstrijdanalyses, en alles wat over een
-individuele speler gaat. Zet er nooit iets uit die map in een bestand dat wel
+individuele speler gaat. Daar staat ook `oefeningen.md`: een index van de trainingsvormen
+die we gebruiken, met per vorm de bron, bij hoeveel spelers hij werkt, en of hij met onze
+ene keeper kan. Oefeningen van de KNVB en van TrainersMagazine zijn andermans materiaal,
+dus daar staat een verwijzing, geen kopie. Zet er nooit iets uit die map in een bestand dat wel
 gepusht wordt.
 
 ## Speelwijze, context voor de inhoud
