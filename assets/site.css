@@ -141,3 +141,39 @@ footer{margin-top:48px;color:var(--gedempt);font-size:13px;border-top:1px solid 
   font-size:13px;font-weight:700;fill:#fff;
   paint-order:stroke fill;stroke:rgba(31,41,55,.35);stroke-width:2.5;stroke-linejoin:round;
 }
+
+/* de zes teamafspraken */
+.afspraken{
+  list-style:none;margin:0;padding:0;max-width:760px;
+  display:flex;flex-direction:column;gap:12px;counter-reset:afspraak;
+}
+.afspraken > li{
+  counter-increment:afspraak;
+  background:var(--paneel);border:1px solid var(--rand);
+  border-left:3px solid var(--speler);border-radius:0 12px 12px 0;
+  padding:16px 18px;
+}
+.afspraken > li::before{
+  content:counter(afspraak);
+  font-weight:800;font-size:13px;color:var(--speler);
+  letter-spacing:.08em;display:block;margin-bottom:2px;
+}
+.afspraken h2{font-size:19px;margin:0 0 6px;color:var(--tekst)}
+.afspraken p{margin:0 0 8px;font-size:15px}
+.afspraken p:last-child{margin-bottom:0}
+.roepwoord{
+  background:var(--accent-vlak);color:var(--accent-tekst);
+  border:1px solid var(--accent);border-radius:4px;
+  font-weight:800;letter-spacing:.04em;padding:1px 6px;white-space:nowrap;
+}
+.roepers{
+  background:var(--paneel);border:1px solid var(--rand);border-radius:12px;
+  padding:18px 20px;margin-top:16px;max-width:760px;
+}
+.roepers h2{font-size:17px;margin:0 0 12px}
+.roepers dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;align-items:baseline}
+.roepers dt{
+  background:var(--speler);color:#fff;font-weight:700;font-size:14px;
+  border-radius:999px;min-width:30px;padding:2px 8px;text-align:center;
+}
+.roepers dd{margin:0;font-size:15px}

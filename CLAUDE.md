@@ -71,12 +71,14 @@ Systeem 4-2-3-1, met rugnummers als vaste taal:
 - 7 rechtsbuiten, 11 linksbuiten, 9 spits
 
 Twee regels per linie, dat is het hart van de site. De centrale verdediger is de
-roeper voor de organisatie en voor het zakken, het startsein voor drukzetten ligt
-bij de 6.
+roeper voor de organisatie en voor het zakken. Het startsein voor drukzetten ligt bij
+de 9, en alleen op een trigger; de 6 dirigeert het blok. Dat volgt afspraak 1 en 4 uit
+het teamplan.
 
 ## De pagina's
 
 - `index.html`: startpagina met kaarten naar de rest
+- `teamafspraken.html`: de zes afspraken die voor het hele elftal gelden, plus wie wat roept
 - `opstelling.html`: voornaam per rugnummer in de 4-2-3-1, alleen de basiself
 - `speelafspraken.html`: de twee regels per linie, geanimeerd. Drie momenten: balbezit,
   balverlies en de pressingval bij de uittrap van de tegenstander
@@ -86,8 +88,8 @@ bij de 6.
 - `trainingen.html`: de vaste warming-up en de kernvormen
 - `weekthemas.html`: het thema per week
 
-Op `index.html` staan op dit moment bewust alleen de kaarten naar `speelafspraken.html`
-en `per-linie.html`. De andere vijf kaarten staan in commentaar in dat bestand, en die
+Op `index.html` staan op dit moment bewust alleen de kaarten naar `teamafspraken.html`,
+`speelafspraken.html` en `per-linie.html`. De andere vijf kaarten staan in commentaar in dat bestand, en die
 pagina's zijn nog wel gewoon bereikbaar via hun eigen adres.
 
 De drie animatiepagina's zijn bewust zelfstandig, met eigen CSS in het bestand, zodat
