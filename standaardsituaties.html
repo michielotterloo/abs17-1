@@ -11,16 +11,19 @@
 <div class="wrap">
   <a class="terug" href="index.html">Terug naar het overzicht</a>
   <h1>Standaardsituaties</h1>
-  <p class="sub">Corners voor en tegen: wie neemt hem, wie staat waar, en wat blijft er achter.</p>
+  <p class="sub">Corners, vrije trappen en inworpen: wie neemt hem, wie staat waar, en wat blijft er achter.</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" id="tab-voor" aria-selected="true" onclick="kiesSituatie('voor')">Corner voor</button>
     <button class="tab" role="tab" id="tab-tegen" aria-selected="false" onclick="kiesSituatie('tegen')">Corner tegen</button>
+    <button class="tab" role="tab" id="tab-vrijetrapVoor" aria-selected="false" onclick="kiesSituatie('vrijetrapVoor')">Vrije trap voor</button>
+    <button class="tab" role="tab" id="tab-vrijetrapTegen" aria-selected="false" onclick="kiesSituatie('vrijetrapTegen')">Vrije trap tegen</button>
+    <button class="tab" role="tab" id="tab-inworp" aria-selected="false" onclick="kiesSituatie('inworp')">Inworp</button>
   </div>
 
   <div class="veldlayout">
     <div>
-      <p class="kop">Hun doel staat bovenaan, wij komen van beneden</p>
+      <p class="kop" id="kop"></p>
       <div class="veldhouder">
       <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-label="Veldweergave van de standaardsituatie">
         <rect x="10" y="10" width="460" height="380" rx="6" fill="#4a9d63"/>
@@ -47,9 +50,19 @@
   </div>
 
   <div class="tebepalen">
-    <strong>Nog af te spreken op de training.</strong> De vaste nemers staan hierboven met het rugnummer
-    dat we in de opbouw gebruiken, maar liggen nog niet vast. Vrije trappen rond de zestien, inworpen
-    op eigen helft en de vaste strafschopnemer komen er later bij.
+    <strong>Vaste nemers, nog vast te leggen.</strong> Hieronder staat wat er nu in de beelden
+    is aangenomen. Zolang het niet op de training is afgesproken, is het een voorstel en geen afspraak.
+  </div>
+
+  <div class="roepers">
+    <h2>Wie neemt wat</h2>
+    <dl>
+      <dt>11</dt><dd>Corner van links. Aangenomen, nog niet afgesproken.</dd>
+      <dt>7</dt><dd>Corner van rechts. Aangenomen, nog niet afgesproken.</dd>
+      <dt>10</dt><dd>Vrije trap rond de zestien. Aangenomen, nog niet afgesproken.</dd>
+      <dt>?</dt><dd><strong>Strafschop: nog niemand.</strong> Dit is de enige die je echt vooraf moet vastleggen, want die beslis je niet op het moment zelf.</dd>
+      <dt>6</dt><dd>De lange bal bij de aftrap, als we de aftrapval gebruiken. Wie een goede lange trap heeft neemt hem.</dd>
+    </dl>
   </div>
 
   <div class="blok">
@@ -70,6 +83,7 @@
 const situaties = {
   voor: {
     titel: "Corner voor",
+    kop: "Hun doel staat bovenaan, wij vallen aan naar boven",
     bal: [19, 19],
     spelers: [
       {n:"11", x:48,  y:56},
@@ -99,6 +113,7 @@ const situaties = {
   },
   tegen: {
     titel: "Corner tegen",
+    kop: "Ons eigen doel staat bovenaan, zij vallen aan naar boven",
     bal: [19, 19],
     spelers: [
       {n:"",   t:"tegen", id:"o0", x:46,  y:52},
@@ -131,6 +146,95 @@ const situaties = {
       ["9",  "Blijft hoog staan als uitlaat en gaat nooit mee in het strafschopgebied."]
     ],
     rest: "<strong>Uitverdedigen:</strong> de bal gaat over de zijkant het gebied uit, niet door het midden. Zodra de bal weg is, schuift de lijn samen uit, en de centrale verdediger roept dat. De grijze spelers zijn de tegenstander."
+  },
+
+  vrijetrapVoor: {
+    titel: "Vrije trap voor",
+    kop: "Hun doel staat bovenaan, de vrije trap ligt op zo'n twintig meter",
+    bal: [250, 196],
+    spelers: [
+      {n:"10",x:276,y:214},
+      {n:"9",x:198,y:86},{n:"4",x:288,y:80},{n:"5",x:240,y:122},
+      {n:"11",x:118,y:140},{n:"7",x:392,y:150},
+      {n:"8",x:186,y:236},{n:"6",x:246,y:292},
+      {n:"3",x:88,y:268},{n:"2",x:404,y:268},
+      {n:"",t:"tegen",id:"k",x:240,y:40},
+      {n:"",t:"tegen",id:"m1",x:212,y:150},{n:"",t:"tegen",id:"m2",x:244,y:150},
+      {n:"",t:"tegen",id:"m3",x:276,y:150},{n:"",t:"tegen",id:"m4",x:308,y:150},
+      {n:"",t:"tegen",id:"o1",x:158,y:98},{n:"",t:"tegen",id:"o2",x:332,y:104}
+    ],
+    taken: [
+      ["10", "Neemt hem. Vaste bal: tussen de muur en de keeper, op kniehoogte richting de verre paal."],
+      ["9",  "Start bij de eerste paal en loopt naar buiten. Alles wat kort valt is van jou."],
+      ["4",  "Komt van achteren mee naar de verre paal. Jij bent de enige die van achter naar voren beweegt."],
+      ["5",  "Op de rand van het doelgebied, precies waar de bal terugvalt als de muur hem raakt."],
+      ["11", "Breed blijven aan de linkerkant, klaar voor de bal die naast het gebied uit komt."],
+      ["7",  "Zelfde rechts. Gaat de trap over, dan ben jij de eerste die hem terugbrengt."],
+      ["8",  "Rand zestien, voor de tweede bal. Niet mee het gebied in."],
+      ["6",  "Blijft voor de counter staan. Eerste hoofd op alles wat het gebied uit komt."],
+      ["3",  "Restverdediging links. Je gaat niet mee naar voren, ook niet bij een achterstand."],
+      ["2",  "Restverdediging rechts. Zelfde afspraak: jij en de 3 blijven met z'n tweeen achter."]
+    ],
+    rest: "<strong>Achterblijven:</strong> de 2, de 3 en de 6 blijven achter, net als bij een corner. De keeper blijft op eigen helft. Gaat de trap fout, dan remt de 6 als eerste af. De grijze spelers zijn de tegenstander, met hun muur van vier."
+  },
+
+  vrijetrapTegen: {
+    titel: "Vrije trap tegen",
+    kop: "Ons eigen doel staat bovenaan, de vrije trap ligt op zo'n twintig meter",
+    bal: [272, 206],
+    spelers: [
+      {n:"1",t:"keeper",x:203,y:42},
+      {n:"5",x:245,y:150},{n:"4",x:283,y:150},{n:"6",x:321,y:150},{n:"8",x:359,y:150},
+      {n:"3",x:108,y:130},{n:"2",x:422,y:188},
+      {n:"10",x:158,y:206},{n:"7",x:400,y:252},
+      {n:"11",x:96,y:274},{n:"9",x:243,y:330},
+      {n:"",t:"tegen",id:"o1",x:304,y:226},
+      {n:"",t:"tegen",id:"o2",x:186,y:78},{n:"",t:"tegen",id:"o3",x:264,y:74},
+      {n:"",t:"tegen",id:"o4",x:150,y:172}
+    ],
+    taken: [
+      ["1",  "Je dekt de open kant zelf. De muur staat op de korte hoek, dus alles wat daarnaast komt is van jou. Zet de muur en blijf dan staan."],
+      ["5",  "Buitenste man van de muur, aan de balzijde. Jij bepaalt waar de muur staat, en je springt niet weg."],
+      ["4",  "In de muur. Handen laag, blijven staan, en pas springen als de bal al onderweg is."],
+      ["6",  "In de muur. Jij bent na de trap de eerste die uitstapt voor de tweede bal."],
+      ["8",  "In de muur, buitenste man aan de verre kant. Na de trap meteen mee naar buiten."],
+      ["3",  "De open kant bewaken samen met de keeper. Niet in de muur gaan staan."],
+      ["2",  "Buiten de muur aan de balzijde, op de man die eromheen wil lopen."],
+      ["10", "Rand zestien links. Jij pakt de bal die naast de muur uit komt."],
+      ["7",  "Zelfde rechts. En jij bent na het uitverdedigen de eerste pass."],
+      ["11", "Op de breedte blijven, zodat we bij het uitverdedigen meteen een uitlaat hebben."],
+      ["9",  "Hoog blijven staan. Jij gaat niet mee in het gebied, ook niet bij een hoge bal."]
+    ],
+    rest: "<strong>De muur:</strong> vier man, en de buitenste aan de balzijde bepaalt waar hij staat. De keeper dekt de open kant. Iedereen blijft staan tot de bal geraakt is: wie springt maakt een gat onder zich."
+  },
+
+  inworp: {
+    titel: "Inworp op eigen helft",
+    kop: "Ons eigen doel staat bovenaan, de bal is uit aan de linkerkant",
+    bal: [18, 202],
+    spelers: [
+      {n:"3",x:50,y:220},
+      {n:"11",x:92,y:136},{n:"6",x:134,y:234},{n:"10",x:174,y:290},
+      {n:"5",x:208,y:152},{n:"4",x:298,y:150},{n:"2",x:408,y:198},
+      {n:"8",x:286,y:246},{n:"9",x:244,y:334},{n:"7",x:406,y:308},
+      {n:"1",t:"keeper",x:244,y:56},
+      {n:"",t:"tegen",id:"o1",x:114,y:196},{n:"",t:"tegen",id:"o2",x:188,y:216},
+      {n:"",t:"tegen",id:"o3",x:68,y:168}
+    ],
+    taken: [
+      ["3",  "Gooit hem in, en snel. Hoe langer je wacht, hoe beter zij staan. Je krijgt hem ook terug, dus blijf in beweging na de worp."],
+      ["11", "Langs de lijn vooruit. Jij bent de diepe optie, en ook als je hem niet krijgt maakt jouw loopactie ruimte voor de 6."],
+      ["6",  "Kort aanbieden en open staan. Nooit met je rug naar het veld, want dan kan de bal alleen terug."],
+      ["10", "Achter de bal aanbieden. Jij bent de uitweg als kort en diep allebei dichtzitten."],
+      ["5",  "Aanspeelbaar blijven voor de bal terug, maar nooit dwars door het midden voor ons eigen doel."],
+      ["4",  "Schuif mee naar de balzijde, zodat de afstand klopt als het toch misgaat."],
+      ["2",  "Breed blijven aan de andere kant. Bij een lange bal ben jij de restdekking."],
+      ["8",  "In de rug van de bal blijven. Jij vangt op wat er terugkomt."],
+      ["9",  "Hoog blijven. Ook bij een inworp op eigen helft ben jij de uitlaat."],
+      ["7",  "Breed aan de rechterkant, klaar voor de verplaatsing als we eruit komen."],
+      ["1",  "Meepraten en aanspeelbaar zijn. Bij twijfel is de bal terug op jou beter dan een bal dwars."]
+    ],
+    rest: "<strong>De regel:</strong> snel inwerpen, nooit dwars door het midden op eigen helft, en altijd twee opties, een korte en een diepe. Zit alles dicht, dan is de bal terug op de keeper geen fout maar de afspraak."
   }
 };
 
@@ -163,6 +267,7 @@ function bouwVeld(naam){
 
   document.getElementById("bal").setAttribute("transform",`translate(${s.bal[0]},${s.bal[1]})`);
   document.getElementById("takentitel").textContent = s.titel;
+  document.getElementById("kop").textContent = s.kop;
 
   const lijst = document.getElementById("takenlijst");
   lijst.innerHTML = "";
@@ -181,8 +286,10 @@ function bouwVeld(naam){
 
 function kiesSituatie(naam){
   huidig = naam;
-  document.getElementById("tab-voor").setAttribute("aria-selected", naam==="voor");
-  document.getElementById("tab-tegen").setAttribute("aria-selected", naam==="tegen");
+  Object.keys(situaties).forEach(n=>{
+    const tab = document.getElementById("tab-"+n);
+    if(tab) tab.setAttribute("aria-selected", n===naam);
+  });
   bouwVeld(naam);
 }
 

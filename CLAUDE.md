@@ -84,7 +84,7 @@ het teamplan.
   balverlies en de pressingval bij de uittrap van de tegenstander
 - `per-linie.html`: per linie de losse situaties, met fout en goed naast elkaar
 - `schaduwspel.html`: hoe het blok meeschuift met de bal, in drie delen
-- `standaardsituaties.html`: corners voor en tegen, twee vaste beelden
+- `standaardsituaties.html`: corners, vrije trappen en inworpen, vijf vaste beelden
 - `trainingen.html`: de vaste warming-up en de kernvormen
 - `weekthemas.html`: het thema per week
 
@@ -136,10 +136,18 @@ en twee pivots.
 ## Hoe de standaardsituaties werken
 
 `standaardsituaties.html` gebruikt de gedeelde stylesheet en heeft bovenin het
-script een object `situaties`. Elk blok heeft de balpositie, de `spelers` met
-hun coordinaten in een SVG-viewBox van 480 bij 400 (eigen doel bovenaan, dus
-andersom dan de tactiekplaat), de `taken` per rugnummer en een `rest`-tekst
-over wat er achterblijft. Geen animatie hier, alleen twee vaste beelden.
+script een object `situaties`. Elk blok heeft een `titel`, een `kop` voor de grijze
+regel boven het veld, de balpositie, de `spelers` met hun coordinaten in een
+SVG-viewBox van 480 bij 400, de `taken` per rugnummer en een `rest`-tekst over wat
+er achterblijft. Geen animatie hier, alleen vaste beelden.
+
+Let op welk doel bovenaan staat: dat is steeds het doel waar in die situatie op
+gespeeld wordt. Bij een corner voor en een vrije trap voor is dat hun doel, bij de
+rest het onze. Daarom staat de kop per situatie en niet statisch boven het veld.
+
+Een nieuwe situatie maak je door een blok toe te voegen en een knop in de
+tabbladenrij met als id `tab-` plus de naam; `kiesSituatie` loopt over alles wat in
+`situaties` staat.
 
 ## Hoe de weekthema's werken
 
@@ -150,8 +158,8 @@ in commentaar dat je kunt kopieren voor een nieuwe week.
 
 ## Wat er nog moet komen
 
-- Standaardsituaties: vaste nemers vastleggen, plus vrije trappen rond de
-  zestien, inworpen op eigen helft en de vaste strafschopnemer
+- Standaardsituaties: de vaste nemers zijn nog niet afgesproken. Wat er nu in de
+  beelden staat is een voorstel; de strafschopnemer is nog helemaal leeg
 - De weekthema's bijhouden per week; de vier die er staan zijn de start van
   het seizoen 2026/2027
 
